@@ -30,13 +30,7 @@ const handleCategory = async () =>{
             removeTime = document.getElementById('timesInSeconds')
             const fixedTime = card.others.posted_date;
             const blueBadgeId = document.querySelector('.blue-badge0')
-            console.log(blueBadgeId)
             const blueBadge = card.authors[0].verified;
-            console.log(blueBadge)
-            if (blueBadge == true){
-                blueBadgeId.classList.remove('hidden')
-            }
-            
             const hours = Math.floor(fixedTime / 3600);
             const minutes = Math.floor((fixedTime % 3600) / 60);
             
@@ -54,8 +48,8 @@ const handleCategory = async () =>{
                 <div class="px-6 pb-4 ml-[2.4rem]">
                     <div class="flex">
                         <p class="text-gray-600 text-sm">${card.authors[0].profile_name}</p>
-                        <span class="text-blue-500 text-sm blue-badge0 hidden" id="blue-badge">
-                            <img src="blue-badge.png" alt="" class="w-[20px] ml-[10px]">
+                        <span class="text-blue-500 text-sm blue-badge0" id="blue-badge">
+                        ${card?.authors[0]?.verified?'<img src="blue-badge.png" alt="" class="w-[20px] ml-[10px]">':''}
                         </span>
                     </div>
                     <div class="flex items-center text-gray-600 text-xs mt-2">
