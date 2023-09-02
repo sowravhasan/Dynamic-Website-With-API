@@ -39,7 +39,7 @@ const handleCategory = async () =>{
             <div class="max-w-md w-full rounded-lg overflow-hidden shadow-lg bg-white">
             <div class="mb-[20px] relative">
             <img src=${card.thumbnail} alt="Video Thumbnail" class="max-w-full w-full h-[200px]">
-            <p id="timesInSeconds" class="text-sm rounded absolute bottom-0 right-0 bg-black text-white p-2">${hours} hrs ${minutes} min ago</p>
+            <p id="timesInSeconds" class="text-sm rounded absolute bottom-0 right-0 bg-black text-white ${hours ==0 && minutes ==0 ? "hidden" : ""} p-2">${hours} hrs ${minutes} min ago</p>
         </div>
                 <div class="flex  px-4 pt-4">
                     <img src=${card.authors[0].profile_picture} alt="Channel Logo" class="max-w-full w-10 h-10 rounded-full mr-2">
@@ -67,12 +67,6 @@ const handleCategory = async () =>{
     }
 handleCategory();
 handleCard(1000);
-
-
-
-// item.authors[0].profile_name
-// "<img src=bluetick.svg' >"
-// ${condition ? "<img src=bluetick.svg' >" : ""}
 
 
 
