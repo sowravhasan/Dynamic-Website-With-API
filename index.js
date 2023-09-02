@@ -27,10 +27,19 @@ const handleCategory = async () =>{
         
         data.data.forEach((card) => {
             const div = document.createElement('div');
-            const fixedTime = card.others.posted_date;
             removeTime = document.getElementById('timesInSeconds')
+            const fixedTime = card.others.posted_date;
+            const blueBadgeId = document.querySelector('.blue-badge0')
+            console.log(blueBadgeId)
+            const blueBadge = card.authors[0].verified;
+            console.log(blueBadge)
+            if (blueBadge == true){
+                blueBadgeId.classList.remove('hidden')
+            }
+            
             const hours = Math.floor(fixedTime / 3600);
             const minutes = Math.floor((fixedTime % 3600) / 60);
+            
             div.innerHTML = `
             <div class="">
             <div class="max-w-md w-full rounded-lg overflow-hidden shadow-lg bg-white">
@@ -45,13 +54,8 @@ const handleCategory = async () =>{
                 <div class="px-6 pb-4 ml-[2.4rem]">
                     <div class="flex">
                         <p class="text-gray-600 text-sm">${card.authors[0].profile_name}</p>
-                        <span class="text-blue-500 text-sm ml-auto">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor" class="w-4 h-4 mr-1 inline-block">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            Verified
+                        <span class="text-blue-500 text-sm blue-badge0 hidden" id="blue-badge">
+                            <img src="blue-badge.png" alt="" class="w-[20px] ml-[10px]">
                         </span>
                     </div>
                     <div class="flex items-center text-gray-600 text-xs mt-2">
@@ -72,13 +76,9 @@ handleCard(1000);
 
 
 
-// const timestampInSeconds = 13885;
-
-// Convert seconds to hours and minutes
-// const hours = Math.floor(timestampInSeconds / 3600);
-// const minutes = Math.floor((timestampInSeconds % 3600) / 60);
-
-// console.log(`${hours} hrs ${minutes} min ago`);
+// item.authors[0].profile_name
+// "<img src=bluetick.svg' >"
+// ${condition ? "<img src=bluetick.svg' >" : ""}
 
 
 
