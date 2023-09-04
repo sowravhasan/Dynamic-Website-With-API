@@ -1,16 +1,53 @@
-const handleCategory = async () =>{
-    const response = await fetch ('https://openapi.programming-hero.com/api/videos/categories');
-    const data = await response.json();
-    const categoryButton = document.getElementById('category-button'); 
-    data.data.forEach((category) => {
-        const div = document.createElement('div');
-        div.innerHTML = `<button onclick="handleCard('${category.category_id}')" class="bg-[#D3D3D3] text-dark font-normal py-2 px-4 rounded">
-        ${category.category}
-      </button>`;
-      categoryButton.appendChild(div);
-    })
-    
-};
+  let sortByViewsDescending = false;
+
+
+function convertViewsToNumber(viewsString) {
+  const numericViews = parseFloat(viewsString.replace(/[^0-9.]/g, ''));
+  
+  if (viewsString.includes('k')) {
+    return numericViews * 1000;
+  }
+
+  return numericViews;
+}
+
+const handleCategory = async () => {
+    try {
+      const response = await fetch('https://openapi.programming-hero.com/api/videos/categories');
+      const data = await response.json();
+  
+      const categoryButton = document.getElementById('category-button');
+      let firstButton = true;
+  
+      data.data.forEach((category, index) => {
+        const button = document.createElement('button');
+        button.textContent = category.category;
+        button.classList.add('category-button', 'bg-[#D3D3D3]', 'text-dark', 'font-normal', 'py-2', 'px-4', 'rounded');
+  
+        button.addEventListener('click', () => {
+          const buttons = categoryButton.querySelectorAll('.category-button');
+          buttons.forEach(btn => btn.classList.remove('bg-[#FF1F3D]', 'text-white'));
+  
+          button.classList.add('bg-[#FF1F3D]', 'text-white', 'font-normal', 'py-2', 'px-4', 'rounded');
+  
+          handleCard(category.category_id);
+        });
+  
+        if (firstButton) {
+          button.classList.add('bg-[#FF1F3D]', 'text-white');
+          firstButton = false;
+        }
+  
+        categoryButton.appendChild(button);
+      });
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+  
+  
+
+
 
     const handleCard = async (cardId) => {
         const response = await fetch(`https://openapi.programming-hero.com/api/videos/category/${cardId}`)
@@ -18,19 +55,30 @@ const handleCategory = async () =>{
         const youtubeCard = document.getElementById('youtube-card');
         youtubeCard.innerHTML = '';
         errorPage = document.getElementById('error-page')
-        if (cardId == 1005){
+        if (data.status === false){
            errorPage.classList.remove("hidden");
         }
         else{
             errorPage.classList.add("hidden");
         }
+
+        data.data.sort((a, b) => {
+          const viewA = convertViewsToNumber(a.others.views);
+          const viewB = convertViewsToNumber(b.others.views);
+      
+          if (sortByViewsDescending) {
+            return viewB - viewA; 
+           } 
+          //  else {
+          //   return viewA - viewB; 
+          // }
+        });
         
         data.data.forEach((card) => {
+            
             const div = document.createElement('div');
             removeTime = document.getElementById('timesInSeconds')
             const fixedTime = card.others.posted_date;
-            const blueBadgeId = document.querySelector('.blue-badge0')
-            const blueBadge = card.authors[0].verified;
             const hours = Math.floor(fixedTime / 3600);
             const minutes = Math.floor((fixedTime % 3600) / 60);
             
@@ -65,8 +113,19 @@ const handleCategory = async () =>{
 
         })
     }
-handleCategory();
-handleCard(1000);
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const sortButton = document.getElementById('sort-view');
+      sortButton.addEventListener('click', () => {
+        sortByViewsDescending = !sortByViewsDescending;
+    
+        console.log('Sort by views:', sortByViewsDescending); 
+    
+        handleCard(1000);
+      });
+    });
+    handleCategory();
+    handleCard(1000);
 
 
 

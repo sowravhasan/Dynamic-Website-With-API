@@ -1,0 +1,12 @@
+/* Default style for category buttons */
+.category-button {
+    background-color: #D3D3D3;
+    color: #000;
+  }
+  
+  /* Active style for category buttons */
+  .category-button.active {
+    background-color: #000; /* Change this to your desired active color */
+    color: #fff; /* Change text color for active button if needed */
+  }
+  
